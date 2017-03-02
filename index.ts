@@ -1,5 +1,6 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {HttpModule} from '@angular/http';
 import {SampleComponent} from './src/sample.component';
 import {SampleDirective} from './src/sample.directive';
 import {SamplePipe} from './src/sample.pipe';
@@ -12,7 +13,8 @@ export * from './src/sample.service';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    HttpModule
   ],
   declarations: [
     SampleComponent,
