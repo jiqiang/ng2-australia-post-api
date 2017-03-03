@@ -25,7 +25,8 @@
   },
   "main": "./dist/index.js",
   "dependencies": {
-    "@angular/http": "^2.4.9"
+    "@angular/http": "^2.4.9",
+    "rxjs": "^5.2.0"
   },
   "devDependencies": {
     "@angular/common": "^2.0.0",
