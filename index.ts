@@ -2,7 +2,7 @@ import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HttpModule} from '@angular/http';
 
-import {PacService} from './src/postage-assessment-calculator.service';
+import {PostageAssessmentCalculatorService} from './src/postage-assessment-calculator.service';
 import {AustraliaPostAPIConfig} from './src/australia-post-api-config';
 
 export * from './src/postage-assessment-calculator.service';
@@ -20,7 +20,7 @@ export class AustraliaPostAPIModule {
     return {
       ngModule: AustraliaPostAPIModule,
       providers: [
-        PacService,
+        PostageAssessmentCalculatorService,
         {provide: AustraliaPostAPIConfig, useValue: config}
       ]
     };
