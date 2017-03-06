@@ -58,10 +58,10 @@ export class PostageAssessmentCalculatorService {
   getDomesticLetterServices(params: any): Promise<any[]> {
     let url = `${this.baseUrl}/postage/letter/domestic/service.json`;
     let search = new URLSearchParams();
-    search.append('length', String(params.length));
-    search.append('width', String(params.width));
-    search.append('thickness', String(params.thickness));
-    search.append('weight', String(params.weight));
+    search.append('length', params.length);
+    search.append('width', params.width);
+    search.append('thickness', params.thickness);
+    search.append('weight', params.weight);
 
     return this.http.get(url, {headers: this.headers, search: search})
       .toPromise()
@@ -73,7 +73,7 @@ export class PostageAssessmentCalculatorService {
     let url = `${this.baseUrl}/postage/letter/domestic/calculate.json`;
     let search = new URLSearchParams();
     search.append('service_code', params.service_code);
-    search.append('weight', String(params.weight));
+    search.append('weight', params.weight);
     if (params.option_code) {
       search.append('option_code', params.option_code);
     }
@@ -81,7 +81,7 @@ export class PostageAssessmentCalculatorService {
       search.append('suboption_code', params.suboption_code);
     }
     if (params.extra_cover) {
-      search.append('extra_cover', String(params.extra_cover));
+      search.append('extra_cover', params.extra_cover);
     }
 
     return this.http.get(url, {headers: this.headers, search: search})
