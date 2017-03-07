@@ -35,33 +35,29 @@ export class PostageAssessmentCalculatorService {
       .catch(this.handleError);
   }
 
-  getWeights(isDomestic: boolean, isLetter: boolean): Promise<any[]> {
-    let domOrIntel = isDomestic ? 'domestic' : 'international';
-    let letterOrParcel = isLetter ? 'letter' : 'parcel';
-    let url = `${this.baseUrl}/postage/${letterOrParcel}/${domOrIntel}/weight.json`;
-    return this.http.get(url, {headers: this.headers})
-      .toPromise()
-      .then(response => response.json().weights.weight)
-      .catch(this.handleError);
+  getDomesticLetterWeights(): Promise<any[]> {
+    return this.getWeights('domestic', 'letter');
   }
 
-  getSizes(isDomestic: boolean, isLetter: boolean): Promise<any[]> {
-    let domOrIntel = isDomestic ? 'domestic' : 'international';
-    let letterOrParcel = isLetter ? 'letter' : 'parcel';
-    let url = `${this.baseUrl}/postage/${letterOrParcel}/${domOrIntel}/size.json`;
-    return this.http.get(url, {headers: this.headers})
-      .toPromise()
-      .then(response => response.json().sizes.size)
-      .catch(this.handleError);
+  getDomesticParcelWeights(): Promise<any[]> {
+    return this.getWeights('domestic', 'parcel');
   }
 
-  getDomesticLetterServices(params: any): Promise<any[]> {
+  getDomesticLetterSizes(): Promise<any> {
+    return this.getSizes('domestic', 'letter');
+  }
+
+  getDomesticParcelSizes(): Promise<any> {
+    return this.getSizes('domestic', 'parcel');
+  }
+
+  getDomesticLetterServices(length: any, width: any, thickness: any, weight: any): Promise<any[]> {
     let url = `${this.baseUrl}/postage/letter/domestic/service.json`;
     let search = new URLSearchParams();
-    search.append('length', params.length);
-    search.append('width', params.width);
-    search.append('thickness', params.thickness);
-    search.append('weight', params.weight);
+    search.append('length', String(length));
+    search.append('width', String(width));
+    search.append('thickness', String(thickness));
+    search.append('weight', String(weight));
 
     return this.http.get(url, {headers: this.headers, search: search})
       .toPromise()
@@ -69,19 +65,19 @@ export class PostageAssessmentCalculatorService {
       .catch(this.handleError);
   }
 
-  calculateDomesticLetterPostage(params: any): Promise<any> {
+  calculateDomesticLetterPostage(serviceCode: any, weight: any, optionCode?: any, suboptionCode?: any, extraCover?: any): Promise<any> {
     let url = `${this.baseUrl}/postage/letter/domestic/calculate.json`;
     let search = new URLSearchParams();
-    search.append('service_code', params.service_code);
-    search.append('weight', params.weight);
-    if (params.option_code) {
-      search.append('option_code', params.option_code);
+    search.append('service_code', String(serviceCode));
+    search.append('weight', String(weight));
+    if (optionCode) {
+      search.append('option_code', String(optionCode));
     }
-    if (params.suboption_code) {
-      search.append('suboption_code', params.suboption_code);
+    if (suboptionCode) {
+      search.append('suboption_code', String(suboptionCode));
     }
-    if (params.extra_cover) {
-      search.append('extra_cover', params.extra_cover);
+    if (extraCover) {
+      search.append('extra_cover', String(extraCover));
     }
 
     return this.http.get(url, {headers: this.headers, search: search})
@@ -93,5 +89,21 @@ export class PostageAssessmentCalculatorService {
   private handleError(error: any): Promise<any> {
     console.error('An error occurred from getCountries()', error);
     return Promise.reject(error.message || error);
+  }
+
+  private getWeights(domesticOrIntel: string, letterOrParcel: string): Promise<any[]> {
+    let url = `${this.baseUrl}/postage/${letterOrParcel}/${domesticOrIntel}/weight.json`;
+    return this.http.get(url, {headers: this.headers})
+      .toPromise()
+      .then(response => response.json().weights.weight)
+      .catch(this.handleError);
+  }
+
+  private getSizes(domesticOrIntel: string, letterOrParcel: string): Promise<any[]> {
+    let url = `${this.baseUrl}/postage/${letterOrParcel}/${domesticOrIntel}/size.json`;
+    return this.http.get(url, {headers: this.headers})
+      .toPromise()
+      .then(response => response.json().sizes.size)
+      .catch(this.handleError);
   }
 }
